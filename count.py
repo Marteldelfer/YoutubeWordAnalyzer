@@ -1,3 +1,4 @@
+from collections import defaultdict
 import pandas as pd
 import wordReader as wr
 
@@ -29,13 +30,10 @@ def compare(channel_name1 : str, channel_name2 : str):
     with open(f'./data/{channel_name1}.txt', 'r') as file:
         
         text = file.read().replace('\n', '').split(' ')
-        words = dict()
+        words = defaultdict(int)
 
         for word in text:
-            if word in words:
-                words[word] += + 1
-            else:
-                words[word] = 1
+            words[word] += 1
 
     sr = pd.Series(words, name = f"{channel_name1}").sort_values(ascending=False)
     df = pd.DataFrame(sr)
@@ -44,13 +42,11 @@ def compare(channel_name1 : str, channel_name2 : str):
     with open(f'./data/{channel_name2}.txt', 'r') as file:
 
         text = file.read().replace('\n', '').split(' ')
-        words = dict()
+        words = defaultdict(int)
 
         for word in text:
-            if word in words:
-                words[word] += + 1
-            else:
-                words[word] = 1
+            words[word] += 1
+
     sr = pd.Series(words, name = f"{channel_name2}").sort_values(ascending=False)
     df[f'{channel_name2}'] = sr
     df[f'{channel_name2}Ratios'] = df[f'{channel_name2}'] / df[f'{channel_name2}'].sum()
